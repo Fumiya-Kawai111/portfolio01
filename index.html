@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - 河合郁哉</title>
+    <!-- Google Fonts - Noto Sans JP を使用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome アイコンを使用するためのCDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ8u42YcLE0R5NDlR2hXv8y6b9FhR8g9eQ+J0k9jV5aKk5uLp4Jp5p0k0z3Ie1fA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* CSSリセットと基本スタイル */
+        :root {
+            --primary-color: #3B82F6; /* 爽やかな青 */
+            --secondary-color: #2563EB; /* 濃い青 */
+            --background-color: #FFFFFF; /* 白 */
+            --text-color: #333333;
+            --light-bg: #F3F4F6; /* 薄いグレー */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            --border-radius: 0.5rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 1. ヘッダー */
+        header {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* メインコンテンツのコンテナ */
+        main {
+            flex-grow: 1;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        /* セクション共通スタイル */
+        .section {
+            background-color: var(--background-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        /* 2. 自己紹介セクション */
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            /* スマホで縦並びにするための設定 */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-photo {
+            /* 外部画像不使用のため、色付きの円で代用 */
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            border: 4px solid var(--secondary-color);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            text-align: left;
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* 3. ガクチカセクション */
+        .gaku-chika-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            padding: 1rem;
+            border-left: 5px solid var(--primary-color);
+            background-color: var(--light-bg);
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+
+        /* 項目強調のためのスタイル */
+        .gaku-chika-content strong {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        /* 4. フッター */
+        footer {
+            background-color: var(--text-color);
+            color: var(--light-bg);
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 0.85rem;
+            margin-top: auto; /* mainの下に配置されるようにする */
+        }
+
+        /* レスポンシブデザインの調整 */
+        @media (min-width: 768px) {
+            /* タブレット以上での調整 */
+            .profile-box {
+                flex-direction: row; /* 横並びに戻す */
+                text-align: left;
+            }
+            
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. ヘッダー -->
+    <header>
+        <div class="header-content">
+            <h1>My Portfolio</h1>
+            <!-- ナビゲーションをアイコンで代用 (実際のリンクは無し) -->
+            <nav>
+                <i class="fas fa-home" title="トップ" style="margin-right: 1rem;"></i>
+                <i class="fas fa-envelope" title="連絡先"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 2. 自己紹介セクション -->
+        <section id="profile" class="section">
+            <h2 class="section-title"><i class="fas fa-user-circle"></i>自己紹介 (Profile)</h2>
+            <div class="profile-box">
+                <!-- 画像代用の色付きボックス -->
+                <div class="profile-photo">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="profile-info">
+                    <h2>河合 郁哉 (Fumiya Kawai)</h2>
+                    <p><i class="fas fa-graduation-cap" style="margin-right: 0.5rem; color: var(--primary-color);"></i>所属: 日本大学・応用情報工学科</p>
+                    <!-- ここを修正しました -->
+                    <p><i class="fas fa-birthday-cake" style="margin-right: 0.5rem; color: var(--primary-color);"></i>生年月日: 2006年11月11日</p>
+                    <p><i class="fas fa-laptop-code" style="margin-right: 0.5rem; color: var(--primary-color);"></i>専門分野: Web技術, データ分析</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 学生時代に力を入れたこと（ガクチカ）セクション -->
+        <section id="gaku-chika" class="section">
+            <h2 class="section-title"><i class="fas fa-fire-alt"></i>学生時代に力を入れたこと（ガクチカ）</h2>
+            <div class="gaku-chika-content">
+                <p>
+                    私が学生時代に注力したのは、<strong>個別指導塾でのアルバイト経験</strong>です。
+                    担当生徒は、応用力以前の基礎理解に大きな課題があり、成績が伸び悩む状況でした。
+                </p>
+                <p style="margin-top: 1rem;">
+                    私はこの課題解決のため、<strong>初歩的な内容に立ち返る指導を徹底</strong>し、確実な基礎定着を促しました。
+                    さらに、私自身の成功・失敗体験談と具体的な解決策を共有することで、生徒の学習意欲を飛躍的に向上させました。
+                </p>
+                <p style="margin-top: 1rem;">
+                    その結果、長期間の指導を経て模試成績は大幅に向上し、当初E判定だった志望校判定を<strong>B判定まで改善</strong>。
+                    この経験から、本質的な課題を見極め、<strong>相手の視点に立って粘り強く支援することの価値</strong>を深く学びました。
+                </p>
+            </div>
+        </section>
+        
+        <!-- 開発実績やスキルセクションの例 (要件にはありませんが、ポートフォリオサイトとして充実させるための参考として配置) -->
+        <section id="skills" class="section">
+            <h2 class="section-title"><i class="fas fa-tools"></i>スキル・実績（Example）</h2>
+            <p><strong>言語:</strong> JavaScript, Python, C++</p>
+            <p><strong>フレームワーク/ライブラリ:</strong> React, Node.js, Django</p>
+            <p><strong>データベース:</strong> PostgreSQL, MongoDB</p>
+        </section>
+        
+    </main>
+
+    <!-- 4. フッター -->
+    <footer>
+        <p>&copy; 2025 Fumiya Kawai. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
