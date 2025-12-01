@@ -159,6 +159,12 @@
             color: var(--accent-color); 
         }
         
+        /* 学歴リストのスタイル */
+        .academic-history {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+        }
+
         /* キャリアビジョン用のスタイル */
         .career-vision {
             margin-top: 2rem; 
@@ -261,8 +267,17 @@
                 </div>
                 <div class="profile-info">
                     <h2>河合 郁哉 (Fumiya Kawai)</h2>
-                    <p><i class="fas fa-graduation-cap" style="margin-right: 0.5rem;"></i>所属: 日本大学・応用情報工学科</p>
-                    <p><i class="fas fa-birthday-cake" style="margin-right: 0.5rem;"></i>生年月日: 2006年11月11日</p>
+                    
+                    <!-- 学歴情報をまとめる -->
+                    <div class="academic-history">
+                        <p><i class="fas fa-graduation-cap" style="margin-right: 0.5rem;"></i>学歴:</p>
+                        <ul style="list-style-type: none; padding-left: 2rem;">
+                            <li style="margin-bottom: 0.25rem;">立教新座高等学校 卒業</li>
+                            <li style="margin-bottom: 0.25rem;">日本大学 応用情報工学科 在学中</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 1rem;"><i class="fas fa-birthday-cake" style="margin-right: 0.5rem;"></i>生年月日: 2006年11月11日</p>
                     <p><i class="fas fa-laptop-code" style="margin-right: 0.5rem;"></i>専門分野: Web技術, データ分析</p>
                     <!-- 座右の銘を追加 -->
                     <p><i class="fas fa-lightbulb" style="margin-right: 0.5rem;"></i>座右の銘: 微に入り細を穿つ</p>
