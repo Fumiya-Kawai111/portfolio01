@@ -9,17 +9,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome アイコンを使用するためのCDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ8u42YcLE0R5NDlR2hXv8y6b9FhR8g9eQ+J0k9jV5aKk5uLp4Jp5p0k0z3Ie1fA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Chart.js ライブラリをCDNから読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <style>
         /* CSSリセットと基本スタイル */
         :root {
-            --primary-color: #3B82F6; /* 爽やかな青 */
-            --secondary-color: #2563EB; /* 濃い青 */
-            --background-color: #FFFFFF; /* 白 */
+            /* 温かみのある配色（アイボリーと暗い茶色） */
+            --primary-color: #4A3C35; /* ダークチョコレート/暗い茶色（タイトル・キー要素）*/
+            --secondary-color: #584D46; /* 濃いグレーブラウン（テキスト） */
+            --accent-color: #795548; /* 落ち着いたアースブラウン（グラフ線、強調） */
+            --background-color: #FFFFFF; /* ピュアホワイト（セクション背景） */
             --text-color: #333333;
-            --light-bg: #F3F4F6; /* 薄いグレー */
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            --border-radius: 0.5rem;
+            --light-bg: #FAF9F6; /* ボディ背景：アイボリー（肌色に近い明るい色） */
+            --shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.08);
+            --border-radius: 0.75rem;
         }
 
         * {
@@ -41,9 +45,12 @@
         /* 1. ヘッダー */
         header {
             background-color: var(--primary-color);
-            color: var(--background-color);
+            color: var(--light-bg);
             padding: 1rem 0;
             box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
@@ -56,7 +63,7 @@
         }
 
         .header-content h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
         }
 
@@ -64,116 +71,168 @@
         main {
             flex-grow: 1;
             max-width: 1000px;
-            margin: 2rem auto;
+            margin: 3rem auto;
             padding: 0 1.5rem;
             width: 100%;
+        }
+
+        /* スクロールアニメーションの初期状態（すべてのセクションに適用） */
+        .reveal {
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px); /* 下から30pxスライドさせる */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* 600msかけて滑らかに変化 */
+        }
+
+        /* スクロールアニメーションの活性状態（画面内に入ったときに適用） */
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* セクション共通スタイル */
         .section {
             background-color: var(--background-color);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 3rem; 
+            margin-bottom: 3rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
+            border: 1px solid #E5E5E5; 
         }
 
         .section-title {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--secondary-color);
-            border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
+            color: var(--primary-color); 
+            border-bottom: 4px solid var(--accent-color); 
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
         }
 
         .section-title i {
-            margin-right: 0.75rem;
-            font-size: 1.5rem;
+            margin-right: 1rem;
+            font-size: 1.75rem;
         }
 
         /* 2. 自己紹介セクション */
         .profile-box {
             display: flex;
-            align-items: center;
-            gap: 2rem;
-            /* スマホで縦並びにするための設定 */
+            align-items: flex-start; 
+            gap: 3rem;
             flex-direction: column;
             text-align: center;
         }
 
         .profile-photo {
-            /* 外部画像不使用のため、色付きの円で代用 */
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color)); /* グラデーション */
             color: var(--background-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3rem;
-            border: 4px solid var(--secondary-color);
+            font-size: 4rem;
+            box-shadow: 0 0 0 6px var(--background-color), 0 0 0 8px var(--primary-color);
             flex-shrink: 0;
         }
 
         .profile-info {
             text-align: left;
+            width: 100%;
         }
 
         .profile-info h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
             color: var(--primary-color);
         }
 
         .profile-info p {
             font-size: 1.1rem;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem; 
+        }
+        
+        .profile-info p i {
+            color: var(--accent-color); 
+        }
+        
+        /* キャリアビジョン用のスタイル */
+        .career-vision {
+            margin-top: 2rem; 
+            padding-top: 1.5rem;
+            border-top: 1px solid #DDDDDD; 
+        }
+        
+        .career-vision strong {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
         }
         
         /* 3. ガクチカセクション */
         .gaku-chika-content {
-            font-size: 1rem;
-            line-height: 1.8;
-            padding: 1rem;
-            border-left: 5px solid var(--primary-color);
+            font-size: 1.05rem;
+            line-height: 2;
+            padding: 1.5rem;
+            border-left: 5px solid var(--accent-color);
             background-color: var(--light-bg);
-            border-radius: 0 0.25rem 0.25rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 2rem;
         }
 
         /* 項目強調のためのスタイル */
         .gaku-chika-content strong {
-            color: var(--secondary-color);
+            color: var(--primary-color); 
             font-weight: 700;
         }
 
+        /* グラフセクション */
+        .chart-container {
+            width: 100%;
+            max-height: 400px; 
+            padding: 1rem;
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
         /* 4. フッター */
         footer {
-            background-color: var(--text-color);
+            background-color: var(--primary-color); 
             color: var(--light-bg);
             text-align: center;
-            padding: 1rem 0;
-            font-size: 0.85rem;
-            margin-top: auto; /* mainの下に配置されるようにする */
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+            margin-top: auto; 
         }
 
         /* レスポンシブデザインの調整 */
         @media (min-width: 768px) {
-            /* タブレット以上での調整 */
+            /* PC/タブレットレイアウト */
             .profile-box {
-                flex-direction: row; /* 横並びに戻す */
+                flex-direction: row; 
                 text-align: left;
+                align-items: flex-start; 
             }
-            
             .header-content h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .section-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+            main {
+                margin: 4rem auto;
+            }
+            
+            /* ガクチカのグリッドレイアウトを解除し、縦積みに戻す */
+            .gaku-chika-grid {
+                display: block; 
+                gap: 0;
             }
         }
     </style>
@@ -184,17 +243,16 @@
     <header>
         <div class="header-content">
             <h1>My Portfolio</h1>
-            <!-- ナビゲーションをアイコンで代用 (実際のリンクは無し) -->
             <nav>
-                <i class="fas fa-home" title="トップ" style="margin-right: 1rem;"></i>
+                <i class="fas fa-home" title="トップ" style="margin-right: 1.5rem;"></i>
                 <i class="fas fa-envelope" title="連絡先"></i>
             </nav>
         </div>
     </header>
 
     <main>
-        <!-- 2. 自己紹介セクション -->
-        <section id="profile" class="section">
+        <!-- 2. 自己紹介セクション - スクロールで現れるように 'reveal' クラスを追加 -->
+        <section id="profile" class="section reveal">
             <h2 class="section-title"><i class="fas fa-user-circle"></i>自己紹介 (Profile)</h2>
             <div class="profile-box">
                 <!-- 画像代用の色付きボックス -->
@@ -203,35 +261,57 @@
                 </div>
                 <div class="profile-info">
                     <h2>河合 郁哉 (Fumiya Kawai)</h2>
-                    <p><i class="fas fa-graduation-cap" style="margin-right: 0.5rem; color: var(--primary-color);"></i>所属: 日本大学・応用情報工学科</p>
-                    <!-- ここを修正しました -->
-                    <p><i class="fas fa-birthday-cake" style="margin-right: 0.5rem; color: var(--primary-color);"></i>生年月日: 2006年11月11日</p>
-                    <p><i class="fas fa-laptop-code" style="margin-right: 0.5rem; color: var(--primary-color);"></i>専門分野: Web技術, データ分析</p>
+                    <p><i class="fas fa-graduation-cap" style="margin-right: 0.5rem;"></i>所属: 日本大学・応用情報工学科</p>
+                    <p><i class="fas fa-birthday-cake" style="margin-right: 0.5rem;"></i>生年月日: 2006年11月11日</p>
+                    <p><i class="fas fa-laptop-code" style="margin-right: 0.5rem;"></i>専門分野: Web技術, データ分析</p>
+                    <!-- 座右の銘を追加 -->
+                    <p><i class="fas fa-lightbulb" style="margin-right: 0.5rem;"></i>座右の銘: 微に入り細を穿つ</p>
+                    
+                    <!-- キャリアビジョンを追加 -->
+                    <div class="career-vision">
+                        <strong><i class="fas fa-bullseye" style="margin-right: 0.5rem;"></i>キャリアビジョン</strong>
+                        <p>入社後3年以内にリーダー職に就き、5年以内にマネジメント能力を身に着けたいと考えています。</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. 学生時代に力を入れたこと（ガクチカ）セクション -->
-        <section id="gaku-chika" class="section">
+        <!-- 3. 学生時代に力を入れたこと（ガクチカ）セクション - スクロールで現れるように 'reveal' クラスを追加 -->
+        <section id="gaku-chika" class="section reveal">
             <h2 class="section-title"><i class="fas fa-fire-alt"></i>学生時代に力を入れたこと（ガクチカ）</h2>
-            <div class="gaku-chika-content">
-                <p>
-                    私が学生時代に注力したのは、<strong>個別指導塾でのアルバイト経験</strong>です。
-                    担当生徒は、応用力以前の基礎理解に大きな課題があり、成績が伸び悩む状況でした。
-                </p>
-                <p style="margin-top: 1rem;">
-                    私はこの課題解決のため、<strong>初歩的な内容に立ち返る指導を徹底</strong>し、確実な基礎定着を促しました。
-                    さらに、私自身の成功・失敗体験談と具体的な解決策を共有することで、生徒の学習意欲を飛躍的に向上させました。
-                </p>
-                <p style="margin-top: 1rem;">
-                    その結果、長期間の指導を経て模試成績は大幅に向上し、当初E判定だった志望校判定を<strong>B判定まで改善</strong>。
-                    この経験から、本質的な課題を見極め、<strong>相手の視点に立って粘り強く支援することの価値</strong>を深く学びました。
-                </p>
+            
+            <!-- 縦積みに戻すため、グリッドコンテナの内容をシンプルなDIVに変更 -->
+            <div class="gaku-chika-grid">
+                <!-- 説明文 -->
+                <div style="margin-bottom: 2rem;">
+                    <div class="gaku-chika-content" style="margin-bottom: 0;">
+                        <p>
+                            私が学生時代に注力したのは、<strong>個別指導塾でのアルバイト経験</strong>です。
+                            担当生徒は、応用力以前の基礎理解に大きな課題があり、成績が伸び悩む状況でした。
+                        </p>
+                        <p style="margin-top: 1rem;">
+                            私はこの課題解決のため、<strong>初歩的な内容に立ち返る指導を徹底</strong>し、確実な基礎定着を促しました。
+                            さらに、私自身の成功・失敗体験談と具体的な解決策を共有することで、生徒の学習意欲を飛躍的に向上させました。
+                        </p>
+                        <p style="margin-top: 1rem;">
+                            その結果、長期間の指導を経て模試成績は大幅に向上し、当初E判定だった志望校判定を<strong>B判定まで改善</strong>。
+                            この経験から、本質的な課題を見極め、<strong>相手の視点に立って粘り強く支援することの価値</strong>を深く学びました。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- グラフエリア -->
+                <div>
+                    <h3 class="section-title" style="font-size: 1.5rem; margin-top: 0; border-bottom: none; margin-bottom: 1rem;"><i class="fas fa-chart-line"></i>指導実績（2年間 / 模試偏差値）</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
             </div>
         </section>
         
-        <!-- 開発実績やスキルセクションの例 (要件にはありませんが、ポートフォリオサイトとして充実させるための参考として配置) -->
-        <section id="skills" class="section">
+        <!-- 開発実績やスキルセクションの例 - スクロールで現れるように 'reveal' クラスを追加 -->
+        <section id="skills" class="section reveal">
             <h2 class="section-title"><i class="fas fa-tools"></i>スキル・実績（Example）</h2>
             <p><strong>言語:</strong> JavaScript, Python, C++</p>
             <p><strong>フレームワーク/ライブラリ:</strong> React, Node.js, Django</p>
@@ -245,5 +325,136 @@
         <p>&copy; 2025 Fumiya Kawai. All Rights Reserved.</p>
     </footer>
 
+    <!-- Chart.js グラフ描画スクリプトとスクロールアニメーション制御スクリプト -->
+    <script>
+        /**
+         * スクロールアニメーションのロジック:
+         * '.reveal' クラスを持つ要素が画面内に表示されたら '.active' クラスを追加し、アニメーションをトリガーする。
+         */
+        function checkVisibilityAndAnimate() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            // 画面の高さの約80%をトリガーポイントとする
+            const windowHeight = window.innerHeight;
+            const revealPoint = 0.8; 
+
+            reveals.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+
+                // 要素が画面の指定されたポイントより上に来たら（画面内に現れたら）
+                if (elementTop < windowHeight * revealPoint) {
+                    el.classList.add('active');
+                } 
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Chart.js グラフ初期化コード ---
+            // 24ヶ月分のダミーデータ生成 (偏差値40 -> 65 への緩やかな上昇)
+            const initialScore = 40;
+            const targetScore = 65;
+            const months = 24;
+            const dataPoints = [];
+            const labels = [];
+            
+            for (let i = 0; i < months; i++) {
+                const trend = initialScore + (targetScore - initialScore) * (i / (months - 1));
+                const score = trend + (Math.random() * 4 - 2); 
+                
+                dataPoints.push(Math.min(targetScore, Math.max(initialScore, Math.round(score))));
+                labels.push(`${i + 1}ヶ月目`);
+            }
+            dataPoints[months - 1] = targetScore;
+
+
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '模試偏差値の推移 (2年間)',
+                        data: dataPoints,
+                        borderColor: 'var(--accent-color)',
+                        backgroundColor: 'rgba(121, 85, 72, 0.1)', /* アースブラウンの薄い色に変更 */
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Noto Sans JP',
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 35, 
+                            max: 70, 
+                            title: {
+                                display: true,
+                                text: '偏差値',
+                                font: {
+                                    size: 16,
+                                    family: 'Noto Sans JP',
+                                }
+                            },
+                            ticks: {
+                                stepSize: 5,
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '指導期間 (月)',
+                                font: {
+                                    size: 16,
+                                    family: 'Noto Sans JP',
+                                }
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 12,
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- スクロールアニメーション初期化 ---
+            // 初回ロード時とスクロール時にアニメーションをチェック
+            checkVisibilityAndAnimate(); 
+            window.addEventListener('scroll', checkVisibilityAndAnimate);
+            window.addEventListener('resize', checkVisibilityAndAnimate);
+        });
+    </script>
 </body>
 </html>
